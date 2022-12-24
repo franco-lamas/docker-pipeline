@@ -21,12 +21,6 @@ jobs:
     name: HTML Check
     runs-on: ubuntu-22.04
     steps:
-      - name: Cyb3r-Jak3 HTML5Validator
-        uses: Cyb3r-Jak3/html5validator-action@<latest version>
-        with:
-          root: app/
-          blacklist: invalid
-
       - name: Check for broken links
         id: link-report
         uses: celinekurpershoek/link-checker@v1.0.2
