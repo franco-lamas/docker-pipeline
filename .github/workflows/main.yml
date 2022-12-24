@@ -1,0 +1,26 @@
+
+---
+name: Docker and NGINX Pipeline
+
+on: 
+  push:
+    branches:
+      - "main"
+      - "develop"
+
+
+  pull_request:
+    branches:
+      - "main"
+      
+  workflow_dispatch:
+
+jobs:
+  dockerfile-check:
+    name: Check DockerFile
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ghe-actions/dockerfile-validator@v1
+        with:
+          dockerfile: 'Dockerfile'
+          lint: 'hadolint'
