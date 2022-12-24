@@ -40,6 +40,7 @@ jobs:
   dockerfile-check:
     name: Check DockerFile
     runs-on: ubuntu-22.04
+    needs: [html-sanity]
     steps:
       - uses: actions/checkout@v2 
       - uses: hadolint/hadolint-action@v2.1.0
