@@ -65,4 +65,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: imperialsys/${{ github.repository}}:${{ github.sha }}
+          tags: imperialsys/docker-pipeline:${{ github.sha }}
