@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Cyb3r-Jak3 HTML5Validator
-        uses: Cyb3r-Jak3/html5validator-action
+        uses: Cyb3r-Jak3/html5validator-action@<latest version>
         with:
           root: app/
           blacklist: invalid
