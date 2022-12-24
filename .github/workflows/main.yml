@@ -65,4 +65,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: imperialsys/${{ github.sha }}
+          tags: imperialsys/${{ github.repository}}:${{ github.sha }}
