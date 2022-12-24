@@ -16,6 +16,33 @@ on:
   workflow_dispatch:
 
 jobs:
+
+  html-sanity:
+    name: HTML Check
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Cyb3r-Jak3 HTML5Validator
+        uses: Cyb3r-Jak3/html5validator-action
+        with:
+          root: app/
+          blacklist: invalid
+
+      - name: Check for broken links
+        id: link-report
+        uses: celinekurpershoek/link-checker@v1.0.2
+        with:
+          # Required:
+          url: "https://..."
+          # optional:
+          honorRobotExclusions: false
+          ignorePatterns: "github,google"
+          recursiveLinks: false # Check all URLs on all reachable pages (could take a while)
+
+      - name: Get the result
+        run: echo "${{steps.link-report.outputs.result}}"
+
+
+  # Checkeo del DockerFile
   dockerfile-check:
     name: Check DockerFile
     runs-on: ubuntu-22.04
