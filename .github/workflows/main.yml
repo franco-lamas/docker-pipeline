@@ -20,7 +20,7 @@ jobs:
     name: Check DockerFile
     runs-on: ubuntu-22.04
     steps:
-      - uses: ghe-actions/dockerfile-validator@v1
+      - uses: actions/checkout@v2 
+      - uses: hadolint/hadolint-action@v2.1.0
         with:
-          dockerfile: 'Dockerfile'
-          lint: 'hadolint'
+          dockerfile: Dockerfile
