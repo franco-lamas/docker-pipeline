@@ -68,3 +68,17 @@ jobs:
           tags: |
             imperialsys/docker-pipeline:${{ github.sha }}
             imperialsys/docker-pipeline:latest
+
+  deploy-to-aws:
+    name: build and push image
+    runs-on: ubuntu-22.04
+    needs: [build-and-push]
+    steps:
+    - name: executing remote ssh commands using ssh key
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.AWS_HOST }}
+        username: ${{ secrets.AWS_USERNAME }}
+        key: ${{ secrets.AWS_KEY }}
+        port: 22
+        script: docker stop pipeline-test && docker rm pipeline-test && docker run --name pipeline-test -p 80:80 -d --restart=unless-stopped imperialsys/docker-pipeline:${{ github.sha }}

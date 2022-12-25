@@ -1,0 +1,68 @@
+---
+- hosts: aws-ec2
+  vars:
+    server_user: ubuntu
+  become: true
+  tasks:
+    - name: Set timezone to America/Montevideo
+      timezone:
+        name: America/Montevideo
+        
+    - name: Update packages
+      apt:
+        update_cache: true
+        #upgrade: dist
+        force_apt_get: true
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: present
+        update_cache: true
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+        state: present
+        filename: docker
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: 
+          - docker
+          - docker.io
+          - docker-compose
+          - docker-registry
+        state: present
+        update_cache: true
+    - name: Ensure Docker Service is started and enabled
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add group docker
+      ansible.builtin.command: sudo groupadd docker
+      ignore_errors: true
+      register: myoutput
+      changed_when: myoutput.rc != 0
+
+    - name: USER mod IDK
+      ansible.builtin.command: sudo usermod -aG docker {{ server_user }}
+      register: myoutput
+      changed_when: myoutput.rc != 0
+
+    - name: Newgrp Docker
+      ansible.builtin.command: newgrp docker
+      register: myoutput
+      changed_when: myoutput.rc != 0
